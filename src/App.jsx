@@ -4,8 +4,8 @@ import Card from "./components/Card";
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-lightGrayishBlue">
-      <section className="max-w-2xl mx-20">
+    <div className="min-h-screen flex flex-col justify-center items-center bg-lightGrayishBlue text-monospace dark:bg-darkDarkBlue">
+      <section className="max-w-4xl mx-20">
         <Header />
         <Search />
         <Card />

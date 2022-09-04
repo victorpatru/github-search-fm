@@ -15,9 +15,9 @@ function Search() {
       <input
         type="text"
         placeholder="Search Github username..."
-        className="bg-white rounded-xl focus:outline-none px-20 py-4 font-monospace shadow-lg w-full"
+        className="bg-white rounded-xl focus:outline-none pl-12 tablet:pl-16 py-4 font-monospace shadow-lg w-full dark:bg-darkLighterDarkBlue"
       />
-      <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1">
+      <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1.5 text-13 font-bold ">
         Search
       </button>
     </section>
