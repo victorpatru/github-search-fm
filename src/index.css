@@ -20,4 +20,12 @@
   p {
     @apply font-monospace text-[15px] leading-[25px];
   }
+
+  input::placeholder {
+    @apply w-[300px] relative right-[30px] text-[13px] md:text-base;
+  }
+}
+
+input {
+  direction: ltr;
 }

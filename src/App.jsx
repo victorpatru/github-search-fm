@@ -1,7 +1,17 @@
-import "./App.css";
+import Header from "./components/Header";
+import Search from "./components/Search";
+import Card from "./components/Card";
 
 function App() {
-  return <h1 class="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center bg-lightGrayishBlue">
+      <section className="max-w-2xl mx-20">
+        <Header />
+        <Search />
+        <Card />
+      </section>
+    </div>
+  );
 }
 
 export default App;
