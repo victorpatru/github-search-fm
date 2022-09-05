@@ -23,9 +23,11 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import Card from "./components/Card";
+import { Octokit } from "octokit";
 
 function App() {
   const [theme, setTheme] = useState("light");
+  const [user, setUser] = useState();
 
   useEffect(() => {
     // Triggering Dark / Light Mode
@@ -38,6 +40,26 @@ function App() {
     }
   }, [theme]);
 
+  useEffect(() => {
+    if (user !== null) {
+      fetchUser(user);
+    }
+  }, [user]);
+
+  const fetchUser = async (username) => {
+    try {
+      const octokit = new Octokit({
+        auth: "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",
+      });
+      const response = await octokit.request("GET /users/{username}", {
+        username,
+      });
+      console.log(response);
+    } catch (error) {
+      // console.log(error);
+    }
+  };
+
   const handleThemeChange = () => {
     if (theme === "light") {
       setTheme("dark");
@@ -46,11 +68,16 @@ function App() {
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setUser(e.target.children[0].value);
+  };
+
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-lightGrayishBlue text-monospace dark:bg-darkDarkBlue">
       <section className="max-w-4xl mx-20">
         <Header handleThemeChange={handleThemeChange} theme={theme} />
-        <Search />
+        <Search handleSubmit={handleSubmit} />
         <Card />
       </section>
     </div>

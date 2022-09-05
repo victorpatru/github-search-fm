@@ -26,6 +26,6 @@
   }
 
   input::placeholder {
-    @apply w-[300px] text-13 tablet:text-[16px] desktop:text-[18px] leading-25 dark:text-white font-normal;
+    @apply w-[300px] text-13 tablet:text-[16px] desktop:text-[18px] leading-25;
   }
 }

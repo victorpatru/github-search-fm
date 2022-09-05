@@ -1,4 +1,4 @@
-function Search() {
+function Search({ handleSubmit }) {
   return (
     <section className="relative mt-6">
       <svg
@@ -12,17 +12,19 @@ function Search() {
           fill="#0079ff"
         />
       </svg>
-      <input
-        type="text"
-        placeholder="Search Github username..."
-        className="bg-white rounded-xl focus:outline-none pl-12 tablet:pl-16 py-4 font-monospace shadow-lg w-full dark:bg-darkLighterDarkBlue dark:caret-white"
-      />
-      <p className="hidden absolute text-[#F74646] font-bold text-[15px] top-4 right-32">
-        No result
-      </p>
-      <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1.5 text-13 font-bold tablet:px-8 hover:bg-[#60ABFF]">
-        Search
-      </button>
+      <form className="group" onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Search Github username..."
+          className="bg-white rounded-xl focus:outline-none pl-12 tablet:pl-16 py-4 font-monospace shadow-lg w-full dark:bg-darkLighterDarkBlue dark:caret-white dark:text-white"
+        />
+        <p className="hidden absolute text-[#F74646] font-bold text-13 tablet:text-[15px] top-4 right-24 tablet:right-32">
+          No result
+        </p>
+        <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1.5 text-13 font-bold tablet:px-8 hover:bg-[#60ABFF] ">
+          Search
+        </button>
+      </form>
     </section>
   );
 }
