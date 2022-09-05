@@ -21,6 +21,10 @@
     @apply font-monospace text-[15px] leading-[25px];
   }
 
+  a {
+    @apply font-monospace text-[15px] leading-[25px];
+  }
+
   input::placeholder {
     @apply w-[300px] text-13 tablet:text-[16px] desktop:text-[18px] leading-25 dark:text-white font-normal;
   }

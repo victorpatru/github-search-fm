@@ -15,9 +15,12 @@ function Search() {
       <input
         type="text"
         placeholder="Search Github username..."
-        className="bg-white rounded-xl focus:outline-none pl-12 tablet:pl-16 py-4 font-monospace shadow-lg w-full dark:bg-darkLighterDarkBlue"
+        className="bg-white rounded-xl focus:outline-none pl-12 tablet:pl-16 py-4 font-monospace shadow-lg w-full dark:bg-darkLighterDarkBlue dark:caret-white"
       />
-      <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1.5 text-13 font-bold ">
+      <p className="hidden absolute text-[#F74646] font-bold text-[15px] top-4 right-32">
+        No result
+      </p>
+      <button className="absolute bg-blue px-5 py-3 text-white rounded-lg right-2 top-1.5 text-13 font-bold tablet:px-8 hover:bg-[#60ABFF]">
         Search
       </button>
     </section>
