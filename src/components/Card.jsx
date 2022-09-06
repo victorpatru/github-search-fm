@@ -7,7 +7,7 @@ function Card({ fetchObject }) {
   );
   const [profileLink, setProfileLink] = useState("https://github.com/octocat");
   const [userLogin, setUserLogin] = useState("octocat");
-  const [joined, setJoined] = useState("2008-01-14T04:33:35Z");
+  const [joined, setJoined] = useState("Joined 14 January 2008");
   const [bio, setBio] = useState("This profile has no bio");
   const [publicRepos, setPublicRepos] = useState(8);
   const [followers, setFollowers] = useState(3938);
@@ -18,14 +18,21 @@ function Card({ fetchObject }) {
   const [currentCompany, setCurrentCompany] = useState("github");
 
   // Create function that turns this "2022-03-29T12:13:01Z" into this "Joined 29 March 2022"
+  const joinedDate = (date) => {
+    const newDate = new Date(date);
+    const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
+      newDate
+    );
+    return `Joined ${newDate.getDate()} ${month} ${newDate.getFullYear()}`;
+  };
 
   useEffect(() => {
     if (fetchObject !== null) {
       setName(fetchObject.data.name || fetchObject.data.login);
       setAvatar(fetchObject.data.avatar_url);
-      setProfileLink(fetchObject.data.url);
+      setProfileLink(fetchObject.data.html_url);
       setUserLogin(fetchObject.data.login);
-      setJoined(fetchObject.data.created_at);
+      setJoined(joinedDate(fetchObject.data.created_at));
       setBio(fetchObject.data.bio || "This profile has no bio");
       setPublicRepos(fetchObject.data.public_repos);
       setFollowers(fetchObject.data.followers);
@@ -63,7 +70,7 @@ function Card({ fetchObject }) {
             </a>
           </div>
           <h4 className="text-13 text-gray dark:text-white tablet:text-15">
-            Joined 25 Jan 2011
+            {joined}
           </h4>
         </div>
       </section>
