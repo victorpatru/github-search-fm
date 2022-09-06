@@ -3,18 +3,18 @@ Your users should be able to:
 
 [X] View the optimal layout for the app depending on their device's screen size
 [] See hover states for all interactive elements on the page
-[] Search for GitHub users by their username
-[] See relevant user information based on their search
+[X] Search for GitHub users by their username
+[X] See relevant user information based on their search
 [X] Switch between light and dark themes
-[] **Bonus**: Have the correct color scheme chosen for them based on their computer preferences. _Hint_: Research `prefers-color-scheme` in CSS.
+[X] **Bonus**: Have the correct color scheme chosen for them based on their computer preferences. _Hint_: Research `prefers-color-scheme` in CSS.
 
 ### Expected behaviour
 
-[] On first load, show the profile information for Octocat.
+[X] On first load, show the profile information for Octocat.
 [] Display an error message (as shown in the design) if no user is found when a new search is made.
-[] If a GitHub user hasn't added their name, show their username where the name would be without the `@` symbol and again below with the `@` symbol.
-[] If a GitHub user's bio is empty, show the text "This profile has no bio" with transparency added (as shown in the design). The lorem ipsum text in the designs shows how the bio should look when it is present.
-[] If any of the location, website, twitter, or company properties are empty, show the text "Not Available" with transparency added (as shown in the design).
+[X] If a GitHub user hasn't added their name, show their username where the name would be without the `@` symbol and again below with the `@` symbol.
+[X] If a GitHub user's bio is empty, show the text "This profile has no bio" with transparency added (as shown in the design). The lorem ipsum text in the designs shows how the bio should look when it is present.
+[X] If any of the location, website, twitter, or company properties are empty, show the text "Not Available" with transparency added (as shown in the design).
 [] Website, twitter, and company information should all be links to those resaources. For the company link, it should remove the `@` symbol and link to the company page on GitHub. For Octocat, with `@github` being returned for the company, this would lead to a URL of `https://github.com/github`.
 
 */
@@ -27,10 +27,11 @@ import { Octokit } from "octokit";
 
 function App() {
   const [theme, setTheme] = useState("light");
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
+  const [fetchObject, setFetchObject] = useState(null);
 
+  // Triggering Dark / Light Mode
   useEffect(() => {
-    // Triggering Dark / Light Mode
     if (document.querySelector(":root").classList.contains("light")) {
       document.querySelector(":root").classList.add("dark");
       document.querySelector(":root").classList.remove("light");
@@ -40,6 +41,7 @@ function App() {
     }
   }, [theme]);
 
+  // Search Card Loading
   useEffect(() => {
     if (user !== null) {
       fetchUser(user);
@@ -49,12 +51,12 @@ function App() {
   const fetchUser = async (username) => {
     try {
       const octokit = new Octokit({
-        auth: "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",
+        auth: import.meta.env.GITHUB_KEY,
       });
       const response = await octokit.request("GET /users/{username}", {
         username,
       });
-      console.log(response);
+      setFetchObject(response);
     } catch (error) {
       // console.log(error);
     }
@@ -71,6 +73,7 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setUser(e.target.children[0].value);
+    fetchUser();
   };
 
   return (
@@ -78,7 +81,7 @@ function App() {
       <section className="max-w-4xl mx-20">
         <Header handleThemeChange={handleThemeChange} theme={theme} />
         <Search handleSubmit={handleSubmit} />
-        <Card />
+        <Card fetchObject={fetchObject} />
       </section>
     </div>
   );
