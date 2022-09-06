@@ -12,10 +12,12 @@
     "@esbuild-plugins/node-globals-polyfill": "^0.1.1",
     "@rollup/plugin-inject": "^4.0.4",
     "buffer": "^6.0.3",
+    "events": "^3.3.0",
     "octokit": "^2.0.7",
     "process": "^0.11.10",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "stream-browserify": "^3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.17",
