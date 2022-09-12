@@ -1,58 +1,11 @@
-import { useState, useEffect } from "react";
-
-function Card({ fetchObject }) {
-  const [name, setName] = useState("The Octocat");
-  const [avatar, setAvatar] = useState(
-    "https://avatars.githubusercontent.com/u/583231?v=4"
-  );
-  const [profileLink, setProfileLink] = useState("https://github.com/octocat");
-  const [userLogin, setUserLogin] = useState("octocat");
-  const [joined, setJoined] = useState("Joined 14 January 2008");
-  const [bio, setBio] = useState("This profile has no bio");
-  const [publicRepos, setPublicRepos] = useState(8);
-  const [followers, setFollowers] = useState(3938);
-  const [following, setFollowing] = useState(9);
-  const [location, setLocation] = useState("San Francisco");
-  const [blog, setBlog] = useState("https://github.com/blog");
-  const [twitterAccount, setTwitterAcount] = useState("Not Available");
-  const [currentCompany, setCurrentCompany] = useState("github");
-
-  // Create function that turns this "2022-03-29T12:13:01Z" into this "Joined 29 March 2022"
-  const joinedDate = (date) => {
-    const newDate = new Date(date);
-    const month = new Intl.DateTimeFormat("en-US", { month: "long" }).format(
-      newDate
-    );
-    return `Joined ${newDate.getDate()} ${month} ${newDate.getFullYear()}`;
-  };
-
-  useEffect(() => {
-    if (fetchObject !== null) {
-      setName(fetchObject.data.name || fetchObject.data.login);
-      setAvatar(fetchObject.data.avatar_url);
-      setProfileLink(fetchObject.data.html_url);
-      setUserLogin(fetchObject.data.login);
-      setJoined(joinedDate(fetchObject.data.created_at));
-      setBio(fetchObject.data.bio || "This profile has no bio");
-      setPublicRepos(fetchObject.data.public_repos);
-      setFollowers(fetchObject.data.followers);
-      setFollowing(fetchObject.data.following);
-      setLocation(fetchObject.data.location || "Not Available");
-      setBlog(fetchObject.data.blog || "Not Available");
-      setTwitterAcount(
-        `@${fetchObject.data.twitter_username}` || "Not Available"
-      );
-      setCurrentCompany(fetchObject.data.company || "Not Available");
-    }
-  }, [fetchObject]);
-
+function Card({ state }) {
   return (
     <section className="max-w-5xl bg-white rounded-xl mt-5 px-8 py-12 shadow-lg dark:bg-darkLighterDarkBlue desktop:px-24 desktop:py-14 tablet:px-20">
       <section className="flex flex-row items-center space-x-6 tablet:space-x-12 desktop:space-x-8">
         {/* Github Image */}
-        <a href={profileLink} target="_blank">
+        <a href={state.profileLink} target="_blank">
           <img
-            src={avatar}
+            src={state.avatar}
             alt="User avatar"
             className="rounded-full w-20 h-20 tablet:w-[117px] tablet:h-[117px] desktop:mt-5"
           />
@@ -60,17 +13,19 @@ function Card({ fetchObject }) {
         {/* Github Information */}
         <div className="flex flex-col space-y-0.5 tablet:space-y-1.5 desktop:justify-between desktop:flex-row desktop:space-x-40">
           <div>
-            <a href={profileLink} target="_blank">
+            <a href={state.profileLink} target="_blank">
               <h2 className="text-16  dark:text-white tablet:text-26">
-                {name}
+                {state.name ?? state.login}
               </h2>
             </a>
-            <a href={profileLink} target="_blank">
-              <h3 className="text-blue text-13 tablet:text-16">@{userLogin}</h3>
+            <a href={state.profileLink} target="_blank">
+              <h3 className="text-blue text-13 tablet:text-16">
+                @{state.userLogin}
+              </h3>
             </a>
           </div>
           <h4 className="text-13 text-gray dark:text-white tablet:text-15">
-            {joined}
+            {state.created_at}
           </h4>
         </div>
       </section>
@@ -78,7 +33,7 @@ function Card({ fetchObject }) {
       <p
         className="text-grayishBlue mt-10 leading-25 dark:text-white tablet:text-15 desktop:ml-[150px] desktop:-mt-4"
         style={
-          bio === "This profile has no bio"
+          state.bio === "This profile has no bio"
             ? {
                 opacity: 0.75,
               }
@@ -87,38 +42,38 @@ function Card({ fetchObject }) {
               }
         }
       >
-        {bio}
+        {state.bio}
       </p>
       {/* Github Social Information */}
       <section className="bg-lightGrayishBlue dark:bg-darkDarkBlue flex justify-center space-x-6 py-4 px-5 rounded-xl mt-6 tablet:space-x-12 desktop:ml-[150px]">
         <a
-          href={`https://github.com/${userLogin}?tab=repositories`}
+          href={`https://github.com/${state.userLogin}?tab=repositories`}
           target="_blank"
           className="flex flex-col justify-center items-center tablet:space-y-1"
         >
           <p className="text-grayishBlue text-13 dark:text-white">Repos</p>
           <p className="font-bold text-16 dark:text-white tablet:text-22">
-            {publicRepos}
+            {state.publicRepos}
           </p>
         </a>
         <a
-          href={`https://github.com/${userLogin}?tab=followers`}
+          href={`https://github.com/${state.userLogin}?tab=followers`}
           target="_blank"
           className="flex flex-col justify-center items-center tablet:space-y-1"
         >
           <p className="text-grayishBlue text-13 dark:text-white">Followers</p>
           <p className="font-bold text-16 dark:text-white tablet:text-22">
-            {followers}
+            {state.followers}
           </p>
         </a>
         <a
-          href={`https://github.com/${userLogin}?tab=following`}
+          href={`https://github.com/${state.userLogin}?tab=following`}
           target="_blank"
           className="flex flex-col justify-center items-center text-left tablet:space-y-1"
         >
           <p className="text-grayishBlue text-13 dark:text-white ">Following</p>
           <p className="font-bold text-16 dark:text-white tablet:text-22">
-            {following}
+            {state.following}
           </p>
         </a>
       </section>
@@ -129,7 +84,7 @@ function Card({ fetchObject }) {
         <section
           className="flex flex-row items-center space-x-4 order-1"
           style={
-            location === "Not Available"
+            state.location === "Not Available"
               ? {
                   opacity: 0.5,
                   cursor: "not-allowed",
@@ -146,14 +101,14 @@ function Card({ fetchObject }) {
               className="dark:fill-white"
             />
           </svg>
-          <p className="text-grayishBlue dark:text-white">{location}</p>
+          <p className="text-grayishBlue dark:text-white">{state.location}</p>
         </section>
 
         {/* Website */}
         <section
           className="flex flex-row items-center space-x-4 order-2"
           style={
-            blog === "Not Available"
+            state.blog === "Not Available"
               ? {
                   opacity: 0.5,
                   cursor: "not-allowed",
@@ -170,21 +125,21 @@ function Card({ fetchObject }) {
             </g>
           </svg>
           <a
-            href={blog}
+            href={state.blog}
             target="_blank"
             className="text-grayishBlue dark:text-white hover:underline"
           >
-            {blog}
+            {state.blog}
           </a>
         </section>
 
         {/* Twitter */}
         <a
           className="flex flex-row items-center space-x-4 order-3 tablet:order-1 hover:underline"
-          href={`https://twitter.com/${twitterAccount}`}
+          href={`https://twitter.com/${state.twitterAccount}`}
           target="_blank"
           style={
-            twitterAccount === "Not Available"
+            state.twitterAccount === "Not Available"
               ? {
                   opacity: 0.5,
                   cursor: "not-allowed",
@@ -201,14 +156,16 @@ function Card({ fetchObject }) {
               className="dark:fill-white"
             />
           </svg>
-          <p className="text-grayishBlue dark:text-white">{twitterAccount}</p>
+          <p className="text-grayishBlue dark:text-white">
+            {state.twitterAccount}
+          </p>
         </a>
 
         {/* Location */}
         <section
           className="flex flex-row items-center space-x-4 order-4"
           style={
-            currentCompany === "Not Available"
+            state.currentCompany === "Not Available"
               ? {
                   opacity: 0.5,
                   cursor: "not-allowed",
@@ -224,11 +181,13 @@ function Card({ fetchObject }) {
             </g>
           </svg>
           <a
-            href={`https://github.com/${currentCompany}`}
+            href={`https://github.com/${state.currentCompany}`}
             target="_blank"
             className="hover:underline"
           >
-            <p className="text-grayishBlue dark:text-white">{currentCompany}</p>
+            <p className="text-grayishBlue dark:text-white">
+              {state.currentCompany}
+            </p>
           </a>
         </section>
       </section>

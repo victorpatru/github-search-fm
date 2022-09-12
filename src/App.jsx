@@ -19,16 +19,32 @@ Your users should be able to:
 
 */
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import Header from "./components/Header";
 import Search from "./components/Search";
 import Card from "./components/Card";
 import { Octokit } from "octokit";
+import githubReducer from "./reducer/GithubReducer";
 
 function App() {
   const [theme, setTheme] = useState("light");
-  const [user, setUser] = useState(null);
-  const [fetchObject, setFetchObject] = useState(null);
+  const initialState = {
+    name: "The Octocat",
+    avatar: "https://avatars.githubusercontent.com/u/583231?v=4",
+    profileLink: "https://github.com/octocat",
+    userLogin: "octocat",
+    joined: "Joined 14 January 2008",
+    bio: null,
+    publicRepos: 8,
+    followers: 3938,
+    following: 9,
+    location: "San Francisco",
+    blog: "https://github.com/blog",
+    twitterAccount: "Not Available",
+    currentCompany: "github",
+  };
+
+  const [state, dispatch] = useReducer(githubReducer, initialState);
 
   // Triggering Dark / Light Mode
   useEffect(() => {
@@ -42,21 +58,25 @@ function App() {
   }, [theme]);
 
   // Search Card Loading
-  useEffect(() => {
-    if (user !== null) {
-      fetchUser(user);
-    }
-  }, [user]);
+  // useEffect(() => {
+  //   if (user !== null) {
+  //     fetchUser(user);
+  //   }
+  // }, []);
 
   const fetchUser = async (username) => {
     try {
       const octokit = new Octokit({
         auth: import.meta.env.GITHUB_KEY,
       });
-      const response = await octokit.request("GET /users/{username}", {
+      const { data } = await octokit.request("GET /users/{username}", {
         username,
       });
-      setFetchObject(response);
+      console.log(data);
+      dispatch({
+        type: "GET_USER",
+        payload: data,
+      });
       document.getElementById("error").classList.remove("hidden");
       document.getElementById("error").classList.add("hidden");
     } catch (error) {
@@ -76,8 +96,7 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setUser(e.target.children[0].value);
-    fetchUser();
+    fetchUser(e.target.children[0].value);
   };
 
   return (
@@ -85,7 +104,7 @@ function App() {
       <section className="max-w-4xl mx-20">
         <Header handleThemeChange={handleThemeChange} theme={theme} />
         <Search handleSubmit={handleSubmit} />
-        <Card fetchObject={fetchObject} />
+        <Card state={state} />
       </section>
     </div>
   );
